@@ -134,13 +134,13 @@ impl Stream for SpiStream {
     }
 
     fn read(&mut self, len: usize) -> Result<Vec<u8>> {
-        let mut buf: Vec<u8> = Vec::with_capacity(len);
+        let mut buf = [0u8;len];
         self.spidev.read(&mut buf)?;
         Ok(buf)
     }
 
     fn transfer(&self, data: &[u8]) -> Result<Vec<u8>> {
-        let mut buf: Vec<u8> = Vec::with_capacity(data.len());
+        let mut buf = [0u8;data.len()];
         let mut transfer = SpidevTransfer::read_write(data, &mut buf);
         self.spidev.transfer(&mut transfer)?;
         Ok(buf)
